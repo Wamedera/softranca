@@ -33,63 +33,38 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Softranca"),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 10),
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Tranca",
-              style: TextStyle(fontSize: 20, height: 2),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: Row(
-                children: [
-                  Text("Status:"),
-                  Container(
-                    color: Colors.green,
-                    width: 300,
-                    height: 50,
-                  )
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Softranca",
-              style: TextStyle(fontSize: 20, height: 2),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: Row(
-                children: [
-                  Text("Status:"),
-                  CupertinoSwitch(
-                    value: _softranca,
-                    onChanged: (value) {
-                      setState(() {
-                        _softranca = value;
-                      });
-                    },
+          _tranca
+              ? const ListTile(
+                  leading: Icon(
+                    Icons.shield,
+                    size: 40,
                   ),
-                  Container(
-                    color: Colors.green,
-                    width: 200,
-                    height: 50,
-                  )
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
+                  title: Text("Tranca"),
+                  subtitle: Text("status"),
+                )
+              : const ListTile(
+                  leading: Icon(
+                    Icons.shield_outlined,
+                    size: 40,
+                  ),
+                  title: Text("Tranca"),
+                  subtitle: Text("status"),
+                ),
+          ListTile(
+            leading: CupertinoSwitch(
+              value: _softranca,
+              onChanged: (value) {
+                setState(() {
+                  _softranca = value;
+                });
+                print(_softranca);
+              },
             ),
-          ),
+            title: const Text("Softranca"),
+          )
         ],
       ),
     );
