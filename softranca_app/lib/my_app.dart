@@ -39,8 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
           _tranca
               ? const ListTile(
                   leading: Icon(
-                    Icons.shield,
+                    Icons.shield_sharp,
                     size: 40,
+                    color: Colors.green,
                   ),
                   title: Text("Tranca"),
                   subtitle: Text("status"),
@@ -49,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   leading: Icon(
                     Icons.shield_outlined,
                     size: 40,
+                    color: Colors.red,
                   ),
                   title: Text("Tranca"),
                   subtitle: Text("status"),
@@ -59,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onChanged: (value) {
                 setState(() {
                   _softranca = value;
+                  _tranca = value;
                 });
                 print(_softranca);
               },
