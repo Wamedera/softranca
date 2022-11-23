@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/utils/stream_subscriber_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +31,32 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _tranca = false;
   bool _softranca = false;
 
+  late final DatabaseReference _softrancaRef;
+  late StreamSubscription<DatabaseEvent> _softrancaSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    _softrancaRef = FirebaseDatabase.instance.ref('/softranca/isAtiva');
+    try {
+      final softrancaSnapshot = await _softrancaRef.get();
+      _softranca = softrancaSnapshot.value as bool;
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+
+    _softrancaSubscription =
+        _softrancaRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        _softranca = (event.snapshot.value ?? false) as bool;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,34 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 10),
         children: [
-          _tranca
-              ? const ListTile(
-                  leading: Icon(
-                    Icons.shield_sharp,
-                    size: 40,
-                    color: Colors.green,
-                  ),
-                  title: Text("Tranca"),
-                  subtitle: Text("status"),
-                )
-              : const ListTile(
-                  leading: Icon(
-                    Icons.shield_outlined,
-                    size: 40,
-                    color: Colors.red,
-                  ),
-                  title: Text("Tranca"),
-                  subtitle: Text("status"),
-                ),
           ListTile(
             leading: CupertinoSwitch(
               value: _softranca,
               onChanged: (value) {
                 setState(() {
+                  _softrancaRef.set(value);
                   _softranca = value;
-                  _tranca = value;
                 });
-                print(_softranca);
               },
             ),
             title: const Text("Softranca"),
